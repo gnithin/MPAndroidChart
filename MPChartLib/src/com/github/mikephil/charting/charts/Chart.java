@@ -659,10 +659,19 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * draws all MarkerViews on the highlighted positions
      */
     protected void drawMarkers(Canvas canvas) {
+        String ind = "drawMarkers";
+
+        Log.d(ind, "Inside drawmarkers");
 
         // if there is no marker view or drawing marker is disabled
         if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight())
             return;
+
+        Log.d(ind, "mIndicesToHighlight len");
+        Log.d(ind, Integer.toString(mIndicesToHighlight.length));
+
+        Log.d(ind, "mData");
+        Log.d(ind, Integer.toString(mData.getXValCount()));
 
         for (int i = 0; i < mIndicesToHighlight.length; i++) {
 
@@ -670,7 +679,19 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
             int xIndex = highlight.getXIndex();
             int dataSetIndex = highlight.getDataSetIndex();
 
-            float deltaX = mXAxis.mAxisRange;
+            float deltaX = mXAxis!=null ? mXAxis.mAxisRange:(
+                    ((mData == null ? 0.f : mData.getXValCount()) - 1.f)
+                    );
+
+            if (deltaX < 0){
+                deltaX = 0.0f;
+            }
+
+            Log.d(ind, "DeltaX");
+            Log.d(ind, Float.toString(deltaX));
+
+            Log.d(ind, "xIndex");
+            Log.d(ind, Integer.toString(xIndex));
 
             if (xIndex <= deltaX && xIndex <= deltaX * mAnimator.getPhaseX()) {
 

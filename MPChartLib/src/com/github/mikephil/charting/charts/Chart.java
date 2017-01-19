@@ -717,13 +717,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 view.layout(0, 0, view.getMeasuredWidth(),
                         view.getMeasuredHeight());
 
-                // TODO: Not sure if this thing is actually used here. But try it anyway.
-                if (pos[1] - view.getHeight() <= 0) {
-                    float y = view.getHeight() - pos[1];
-                    view.draw(canvas, pos[0], pos[1] + y);
-                } else {
-                    view.draw(canvas, pos[0], pos[1]);
-                }
+
+                view.draw(canvas, pos[0], pos[1]);
             }
         }
     }

@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.Utils;
@@ -53,6 +54,11 @@ public class StackedBarsMarkerView extends MarkerView {
     public int getXOffset(float xpos) {
         // this will center the marker-view horizontally
         return -(getWidth() / 2);
+    }
+
+    @Override
+    public void preDraw(ChartData chartData, Highlight highlight){
+        // Empty stub
     }
 
     @Override

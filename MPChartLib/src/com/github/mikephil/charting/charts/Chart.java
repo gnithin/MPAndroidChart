@@ -651,14 +651,97 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected boolean mDrawMarkerViews = true;
 
     /**
+     * if set to true, the marker view is drawn when a value is clicked
+     */
+    protected boolean mDrawCustomHighlightViews = true;
+
+    /**
      * the view that represents the marker
      */
     protected MarkerView mMarkerView;
 
     /**
+     * The view that is customizable over and above the MarkerView
+     */
+    protected MarkerView mCustomHighlightView;
+
+    /*
+    A general method that encapsulates the running of both the markerView and the customHighlightView
+     */
+    private void drawViewsOnHighlight(Canvas canvas, Boolean  isViewDefined, MarkerView view){
+        if (view == null || !isViewDefined || !valuesToHighlight())
+            return;
+
+        for (int i = 0; i < mIndicesToHighlight.length; i++) {
+
+            Highlight highlight = mIndicesToHighlight[i];
+            int xIndex = highlight.getXIndex();
+            int dataSetIndex = highlight.getDataSetIndex();
+
+            float deltaX = mXAxis!=null ? mXAxis.mAxisRange:(
+                    ((mData == null ? 0.f : mData.getXValCount()) - 1.f)
+            );
+
+            if (deltaX < 0){
+                deltaX = 0.0f;
+            }
+
+            if (xIndex <= deltaX && xIndex <= deltaX * mAnimator.getPhaseX()) {
+
+                Entry e = mData.getEntryForHighlight(mIndicesToHighlight[i]);
+
+                // make sure entry not null
+                if (e == null || e.getXIndex() != mIndicesToHighlight[i].getXIndex())
+                    continue;
+
+                float[] pos = getMarkerPosition(e, highlight);
+
+                // check bounds
+                if (!mViewPortHandler.isInBounds(pos[0], pos[1]))
+                    continue;
+
+                // callbacks to update the content
+                view.refreshContent(e, highlight);
+
+                // mMarkerView.measure(MeasureSpec.makeMeasureSpec(0,
+                // MeasureSpec.UNSPECIFIED),
+                // MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+                // mMarkerView.layout(0, 0, mMarkerView.getMeasuredWidth(),
+                // mMarkerView.getMeasuredHeight());
+                // mMarkerView.draw(mDrawCanvas, pos[0], pos[1]);
+
+                view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+                        MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+                view.layout(0, 0, view.getMeasuredWidth(),
+                        view.getMeasuredHeight());
+
+                // TODO: Not sure if this thing is actually used here. But try it anyway.
+                if (pos[1] - view.getHeight() <= 0) {
+                    float y = view.getHeight() - pos[1];
+                    view.draw(canvas, pos[0], pos[1] + y);
+                } else {
+                    view.draw(canvas, pos[0], pos[1]);
+                }
+            }
+        }
+    }
+
+    /**
+     * draws the customHighlight views
+     */
+    protected void drawCustomHighlightView(Canvas canvas){
+        drawViewsOnHighlight(canvas, mDrawCustomHighlightViews, mCustomHighlightView);
+    }
+
+    /**
      * draws all MarkerViews on the highlighted positions
      */
-    protected void drawMarkers(Canvas canvas) {
+    protected void drawMarkers(Canvas canvas){
+        drawViewsOnHighlight(canvas, mDrawMarkerViews, mMarkerView);
+    }
+
+    // TODO: Remove this vermin
+    protected void __drawMarkers(Canvas canvas) {
         // if there is no marker view or drawing marker is disabled
         if (mMarkerView == null || !mDrawMarkerViews || !valuesToHighlight())
             return;

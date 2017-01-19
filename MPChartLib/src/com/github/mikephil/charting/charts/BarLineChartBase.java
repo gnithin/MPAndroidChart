@@ -272,7 +272,11 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         mLegendRenderer.renderLegend(canvas);
 
+        // Draw the markerViews
         drawMarkers(canvas);
+
+        // Draw the customHighlightViews
+        drawCustomHighlightView(canvas);
 
         drawDescription(canvas);
 

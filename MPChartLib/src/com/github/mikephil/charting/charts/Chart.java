@@ -1303,8 +1303,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * @param v
      */
     public void setMarkerView(MarkerView v) {
+
         mMarkerView = v;
     }
+
+    public void setCustomHighlightView(MarkerView v) {mCustomHighlightView = v;}
 
     /**
      * returns the view that is set as a marker view for the chart
@@ -1314,6 +1317,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     public MarkerView getMarkerView() {
         return mMarkerView;
     }
+
+    public MarkerView getCustomHighlightView() { return mCustomHighlightView; }
 
     /**
      * Returns the Legend object of the chart. This method can be used to get an
@@ -1452,6 +1457,10 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setDrawMarkerViews(boolean enabled) {
         mDrawMarkerViews = enabled;
+    }
+
+    public void setDrawCustomHighlightViews(boolean enabled) {
+        mDrawCustomHighlightViews = enabled;
     }
 
     /**

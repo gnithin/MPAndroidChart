@@ -703,6 +703,8 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
                 // callbacks to update the content
                 view.refreshContent(e, highlight);
 
+                view.preDraw(this.mData, highlight);
+
                 // mMarkerView.measure(MeasureSpec.makeMeasureSpec(0,
                 // MeasureSpec.UNSPECIFIED),
                 // MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));

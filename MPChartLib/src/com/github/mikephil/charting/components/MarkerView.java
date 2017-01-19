@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 
@@ -72,6 +73,14 @@ public abstract class MarkerView extends RelativeLayout {
      *                  selected range or stack-index (only stacked bar entries).
      */
     public abstract void refreshContent(Entry e, Highlight highlight);
+
+    /**
+     * This is basically used to change configuration before the draw method is actually called.
+     *
+     * @param chartData
+     * @param highlight
+     */
+    public abstract void preDraw(ChartData chartData, Highlight highlight);
 
     /**
      * Use this to return the desired offset you wish the MarkerView to have on the x-axis. By returning -(getWidth() /
